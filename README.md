@@ -27,7 +27,7 @@ The Page token is sent in a request header, never in a URL, and every call carri
 - **KV namespace** `sound7-meta-oauth`, bound as `OAUTH_KV` (ID in `wrangler.jsonc`).
 - **Secrets**, set in the dashboard under Settings, Variables and Secrets, type Secret:
   - `META_PAGE_ID`: the SOUND7 Page's numeric ID
-  - `META_PAGE_TOKEN`: a Page access token (from `me/accounts` with a long-lived user token, so it doesn't expire)
+  - `META_PAGE_TOKEN`: a Page access token, fetched with a long-lived user token so it doesn't expire (see below)
   - `META_APP_SECRET`: the Meta app's App Secret
   - `CONNECTOR_PASSPHRASE`: at least 12 characters
 - **Optional variable** `META_API_VERSION` (default `v26.0`) to move to a newer Graph API version without a code change.
@@ -37,7 +37,13 @@ Connect in Claude with the Worker URL plus `/mcp`.
 
 ## Meta app and token
 
-Permissions on the token: `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, plus `instagram_basic` and `instagram_content_publish` for the Instagram tools to come. The app stays in development mode; it only acts on a Page its owner manages, so App Review isn't needed.
+The Meta app uses the "Manage everything on your Page" use case and isn't attached to a business portfolio. "Require app secret" is on under App settings, Advanced, so a token is useless without `META_APP_SECRET`.
+
+Permissions on the token: `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `pages_read_user_content`, `pages_manage_engagement` and `read_insights`. Instagram permissions get added when the Instagram tools are built.
+
+To make a Page token: in Graph API Explorer, get a user token with those permissions (tick only the SOUND7 Page, and the Shopify portfolio if asked), extend it in the Access Token Tool, then query `PAGE_ID?fields=id,name,access_token`. (`me/accounts` can come back empty because the Page is owned by a business portfolio.) The debugger should show the Page token as "Expires: Never". Never paste tokens into chat.
+
+The app must be in Live mode for posts to be public. In development mode, API posts are visible only to people with a role on the app. Going Live needs a privacy policy, terms and data deletion URL under App settings, Basic. App Review isn't needed for posting to a Page the app owner manages.
 
 If Facebook ever rejects the token (error 190, often after a Facebook password change), generate a new Page token the same way and replace `META_PAGE_TOKEN`.
 
