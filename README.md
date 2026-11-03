@@ -30,7 +30,7 @@ The Page token is sent in a request header, never in a URL, and every call carri
   - `META_PAGE_TOKEN`: a Page access token (from `me/accounts` with a long-lived user token, so it doesn't expire)
   - `META_APP_SECRET`: the Meta app's App Secret
   - `CONNECTOR_PASSPHRASE`: at least 12 characters
-- **Optional variable** `META_API_VERSION` (default `v25.0`) to move to a newer Graph API version without a code change.
+- **Optional variable** `META_API_VERSION` (default `v26.0`) to move to a newer Graph API version without a code change.
 - **Builds**: the Worker is connected to this repo. Every push to `main` runs `npx wrangler deploy`. Secrets live only in Cloudflare and survive deploys.
 
 Connect in Claude with the Worker URL plus `/mcp`.

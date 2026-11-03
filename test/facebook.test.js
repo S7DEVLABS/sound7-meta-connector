@@ -39,13 +39,13 @@ test('preview posts nothing and shows Facebook\'s card', async () => {
   assert.equal(p.card.source, 'facebook');
   assert.equal(p.card.title, 'Dark Pads & Zebra');
   assert.equal(mock.state.posts.length, 0);
-  const scrape = mock.state.requests.find((r) => r.path === '/v25.0/' && r.method === 'POST');
+  const scrape = mock.state.requests.find((r) => r.path === '/v26.0/' && r.method === 'POST');
   assert.equal(scrape.form.scrape, 'true');
   assert.equal(scrape.form.id, LINK);
 });
 
 test('token is sent in a header with appsecret_proof, never in the URL', async () => {
-  for (const r of mock.state.requests.filter((r) => r.path.startsWith('/v25.0'))) {
+  for (const r of mock.state.requests.filter((r) => r.path.startsWith('/v26.0'))) {
     assert.equal(r.query.access_token, undefined);
     assert.ok(r.query.appsecret_proof);
     assert.equal(r.headers.authorization, `Bearer ${TOKEN}`);

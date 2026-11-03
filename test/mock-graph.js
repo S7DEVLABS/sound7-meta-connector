@@ -30,7 +30,7 @@ export function startMock() {
     }
     if (url.pathname === '/blogs/news/missing') return json(404, {});
 
-    const m = url.pathname.match(/^\/v25\.0(\/.*)$/);
+    const m = url.pathname.match(/^\/v26\.0(\/.*)$/);
     if (!m) return json(404, { error: { message: 'Unknown path', code: 803 } });
     const path = m[1];
 

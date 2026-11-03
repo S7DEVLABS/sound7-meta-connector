@@ -7,7 +7,7 @@
 import { fetchCard } from './card.js';
 
 const GRAPH = 'https://graph.facebook.com';
-const DEFAULT_VERSION = 'v25.0';
+const DEFAULT_VERSION = 'v26.0';
 export const MAX_MESSAGE = 63206; // Facebook's limit for a Page post
 
 export class FacebookError extends Error {}
