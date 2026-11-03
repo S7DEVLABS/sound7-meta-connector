@@ -1,0 +1,19 @@
+{
+  "name": "sound7-meta-connector",
+  "version": "1.0.0",
+  "description": "Remote MCP server that lets Claude post to SOUND7's Facebook Page",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/facebook.test.js",
+    "test:worker": "node --test --test-concurrency=1 test/worker.e2e.js"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.4"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.0"
+  },
+  "private": true,
+  "type": "module"
+}

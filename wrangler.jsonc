@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sound7-meta",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  // Needed for Client ID Metadata Documents. Also stops the link-card fetch reaching private addresses.
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "workers_dev": true,
+  "kv_namespaces": [
+    // OAuth grants and the sign-in lockout counter.
+    { "binding": "OAUTH_KV", "id": "415500d83fba4abe88c19098eb2f93f4" }
+  ],
+  // Secrets are set in the Cloudflare dashboard, never here:
+  //   META_PAGE_ID, META_PAGE_TOKEN, META_APP_SECRET, CONNECTOR_PASSPHRASE
+  "observability": { "enabled": true }
+}
