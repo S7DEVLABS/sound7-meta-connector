@@ -18,6 +18,9 @@ const SECRET_HELP = "Update it in the Cloudflare Worker sound7-meta under Settin
 function explain(err, status) {
   const code = err?.code;
   const msg = err?.message || `HTTP ${status}`;
+  if (code === 190 && /Invalid OAuth 2\.0 Access Token|Malformed/i.test(msg)) {
+    return `Facebook doesn't recognise the Page token at all (code 190: ${msg}). That usually means META_PAGE_TOKEN was pasted wrong: cut short, with extra characters, or a different value from the Page token. Check it in the Access Token Debugger, then paste it again. ${SECRET_HELP}`;
+  }
   if (code === 190 || code === 102) {
     return `Facebook rejected the Page token (code ${code}: ${msg}). It has expired or been revoked, often after a Facebook password change. Generate a new Page token and set META_PAGE_TOKEN. ${SECRET_HELP}`;
   }
@@ -42,9 +45,11 @@ export class Facebook {
   constructor(env) {
     this.base = (env.META_GRAPH_BASE || GRAPH).replace(/\/$/, '');
     this.version = env.META_API_VERSION || DEFAULT_VERSION;
-    this.pageId = (env.META_PAGE_ID || '').trim();
-    this.token = (env.META_PAGE_TOKEN || '').trim();
-    this.appSecret = (env.META_APP_SECRET || '').trim();
+    // Copying from Graph API Explorer's JSON often brings the quotes along; strip them.
+    const clean = (v) => String(v || '').trim().replace(/^["']+|["',]+$/g, '').trim();
+    this.pageId = clean(env.META_PAGE_ID);
+    this.token = clean(env.META_PAGE_TOKEN);
+    this.appSecret = clean(env.META_APP_SECRET);
   }
 
   checkConfig() {

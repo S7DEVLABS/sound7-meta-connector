@@ -117,3 +117,8 @@ test('revoked token explains how to fix it', async () => {
     mock.state.tokenRevoked = false;
   }
 });
+
+test('quotes copied from the Explorer are stripped from secrets', async () => {
+  const r = await new Facebook(env({ META_PAGE_TOKEN: `"${TOKEN}",`, META_PAGE_ID: ` "${PAGE_ID}" ` })).recentPosts();
+  assert.ok(Array.isArray(r));
+});
